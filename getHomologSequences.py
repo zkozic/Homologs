@@ -17,8 +17,12 @@ gene_xml = urllib2.urlopen(gene_api).read()
 xmldoc = minidom.parseString(gene_xml)
 
 ##### Parse XML and write FASTA
+query = xmldoc.getElementsByTagName('source')
 homologs = xmldoc.getElementsByTagName('target')
 f = open(outfile, 'w')
+#Write query gene
+f.write('>'+str(query[0].attributes['species'].value+'_'+query[0].attributes['id'].value)+'\n')
+f.write(str(query[0].attributes['seq'].value)+'\n')
 for i in range(0, len(homologs) - 1):
     seq_id = '>'+str(homologs[i].attributes['species'].value+'_'+homologs[i].attributes['id'].value)
     sequence = str(homologs[i].attributes['seq'].value)
